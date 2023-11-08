@@ -8,7 +8,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link, usePage} from '@inertiajs/vue3';
 import {FwbToast} from "flowbite-vue";
 
-const profile = usePage().props.profile.data;
+const profile = usePage().props.profile?.data;
 const showingNavigationDropdown = ref(false);
 
 const ta = ref(false)
@@ -42,7 +42,7 @@ const ta = ref(false)
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Opportunities
                                 </NavLink>
-                                <NavLink v-if="!profile.isCandidate" :href="route('job.create')" :active="route().current('job.create')">
+                                <NavLink v-if="!profile?.isCandidate" :href="route('job.create')" :active="route().current('job.create')">
                                     New Job
                                 </NavLink>
                             </div>
