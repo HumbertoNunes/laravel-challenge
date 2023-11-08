@@ -1,38 +1,50 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { useForm, usePage } from "@inertiajs/vue3";
+import { FwbSelect, FwbTextarea } from "flowbite-vue";
 
-defineProps({
+const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },
-    status: {
-        type: String,
+    profile: {
+        type: Array,
     },
 });
 
 const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
+    name: props.profile?.name,
+    birthdate: props.profile?.birthdate,
+    gender: props.profile?.gender,
+    course: props.profile?.course,
+    biography: props.profile?.biography,
 });
+
+function submit() {
+    return props.profile
+        ? form.patch(route("profile.update"), { preserveScroll: true })
+        : form.post(route("profile.store"), { preserveScroll: true });
+}
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Candidate Profile Information
+            </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your account's profile information and email address.
+                Update your candidate's profile information.
             </p>
         </header>
 
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+        <form @submit.prevent="submit" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
 
@@ -41,48 +53,71 @@ const form = useForm({
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
+                    :required="!profile"
+                    :class="{ 'bg-gray-50 cursor-not-allowed': profile }"
+                    :disabled="profile"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="birthdate" value="Birthdate" />
 
                 <TextInput
-                    id="email"
-                    type="email"
+                    id="birthdate"
+                    type="text"
                     class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
+                    v-model="form.birthdate"
+                    :required="!profile"
+                    :class="{ 'bg-gray-50 cursor-not-allowed': profile }"
+                    :disabled="profile"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.birthdate" />
             </div>
 
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
-                    <Link
-                        :href="route('verification.send')"
-                        method="post"
-                        as="button"
-                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    >
-                        Click here to re-send the verification email.
-                    </Link>
-                </p>
+            <div>
+                <fwb-select
+                    id="gender"
+                    v-model="form.gender"
+                    :options="[
+                        { value: 'male', name: 'Male' },
+                        { value: 'female', name: 'Female' },
+                    ]"
+                    label="Gender"
+                    :required="!profile"
+                    :class="{ 'bg-gray-50': profile }"
+                    :disabled="profile"
+                />
 
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
-                >
-                    A new verification link has been sent to your email address.
-                </div>
+                <InputError class="mt-2" :message="form.errors.gender" />
+            </div>
+
+            <div>
+                <InputLabel for="course" value="Course" />
+
+                <TextInput
+                    id="course"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.course"
+                    required
+                />
+
+                <InputError class="mt-2" :message="form.errors.course" />
+            </div>
+
+            <div>
+                <fwb-textarea
+                    id="biography"
+                    v-model="form.biography"
+                    :rows="4"
+                    label="Biography"
+                    placeholder="Write you message..."
+                />
+
+                <InputError class="mt-2" :message="form.errors.biography" />
             </div>
 
             <div class="flex items-center gap-4">
@@ -94,7 +129,12 @@ const form = useForm({
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+                    <p
+                        v-if="form.recentlySuccessful"
+                        class="text-sm text-gray-600 dark:text-gray-400"
+                    >
+                        Saved.
+                    </p>
                 </Transition>
             </div>
         </form>
