@@ -26,25 +26,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'profileIncomplete' => empty($user->profile),
-            'isCandidate' => $user->profile_type == Candidate::class,
-            'profile' => new CandidateResource($user->profile)
         ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
     }
 
     /**
@@ -60,6 +42,7 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $user->profile()->delete();
         $user->delete();
 
         $request->session()->invalidate();

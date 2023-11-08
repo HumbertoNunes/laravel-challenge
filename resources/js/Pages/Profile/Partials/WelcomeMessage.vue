@@ -14,7 +14,7 @@ const profiles = ref([
 ]);
 
 function profileSelected() {
-    emit("profileSelected", profile.value === 'Candidate');
+    emit("profileSelected", profile.value === "Candidate");
     open.value = false;
 }
 </script>
