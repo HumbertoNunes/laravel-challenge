@@ -21,7 +21,8 @@ class CandidateResource extends JsonResource
             'gender' => $this->gender,
             'course' => $this->course,
             'biography' => $this->biography,
-            'isCandidate' => true
+            'isCandidate' => true,
+            'jobs' => $this->jobs
         ];
     }
 }

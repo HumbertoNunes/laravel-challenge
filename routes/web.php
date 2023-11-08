@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
@@ -34,8 +35,10 @@ Route::middleware(['auth', 'verified', 'profile.completed'])->group(function () 
     Route::get('/dashboard', fn () => to_route('job.index'))->name('dashboard');
 
     Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
+
     Route::get('/jobs/create', [JobController::class, 'create'])->name('job.create');
     Route::post('/jobs', [JobController::class, 'store'])->name('job.store');
+    Route::post('/jobs/{job}/apply', ApplyController::class)->name('job.apply');
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('job.destroy');
 });
 

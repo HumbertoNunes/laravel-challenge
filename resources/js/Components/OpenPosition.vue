@@ -1,7 +1,5 @@
 <script setup>
 import {FwbBadge, FwbCard} from "flowbite-vue";
-import {useTimeAgo} from "@vueuse/core";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {usePage} from "@inertiajs/vue3";
 
 const profile = usePage().props.profile.data;
@@ -12,6 +10,7 @@ const {jobs} = defineProps({
     default: {}
   }
 })
+
 </script>
 
 <template v-if="jobs">
@@ -29,12 +28,7 @@ const {jobs} = defineProps({
           You must study:
           <fwb-badge class="inline" type="indigo">{{ job.requirement }}</fwb-badge>
         </p>
-        <div class="flex items-end mt-5" :class="[profile.isCandidate ? 'justify-between' : 'justify-end']">
-          <PrimaryButton v-if="profile.isCandidate">
-            Apply
-          </PrimaryButton>
-          <small>published {{ useTimeAgo(job.created_at) }}</small>
-        </div>
+        <slot name="actions" :job="job"/>
       </div>
     </fwb-card>
   </template>

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('candidate_id');
             $table->unsignedBigInteger('job_id');
-            $table->date('date');
-            $table->time('time');
-            $table->string('note', 30);
-            $table->enum('status', ['waiting', 'scheduled', 'done']);
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
+            $table->string('notes', 30)->nullable();
+            $table->enum('status', ['waiting', 'scheduled', 'done'])->default('waiting');
             $table->timestamps();
 
             $table->foreign('candidate_id')->references('id')->on('candidates');

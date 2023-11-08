@@ -14,4 +14,12 @@ class Job extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function candidates()
+    {
+        return $this->belongsToMany(Candidate::class, 'interviews')
+            ->as('interviews')
+            ->withPivot('date', 'notes')
+            ->withTimestamps();
+    }
 }

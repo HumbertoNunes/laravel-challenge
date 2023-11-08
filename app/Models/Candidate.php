@@ -16,4 +16,12 @@ class Candidate extends Model
     {
         return $this->MorphOne(User::class, 'profile');
     }
+
+    public function jobs()
+    {
+        return $this->belongsToMany(Job::class, 'interviews')
+            ->as('interviews')
+            ->withPivot('date', 'notes')
+            ->withTimestamps();
+    }
 }

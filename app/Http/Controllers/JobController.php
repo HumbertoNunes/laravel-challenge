@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobCreateRequest;
 use App\Models\Job;
-use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class JobController extends Controller
@@ -12,7 +11,8 @@ class JobController extends Controller
     public function index()
     {
         return Inertia::render('Job/Index', [
-            'jobs' => Job::orderBy('created_at', 'desc')->paginate(3),
+            'jobs' => Job::orderBy('created_at', 'desc')->paginate(2),
+            'page' => request('page')
         ]);
     }
 

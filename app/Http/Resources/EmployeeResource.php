@@ -20,6 +20,7 @@ class EmployeeResource extends JsonResource
             'position' => $this->position,
             'company_name' => $this->company?->name,
             'company_size' => $this->company?->size,
+            'jobs' => $this->jobs,
             'isCandidate' => false
         ];
     }
