@@ -11,6 +11,8 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'position'];
+
     public function user(): MorphOne
     {
         return $this->MorphOne(User::class, 'profile');

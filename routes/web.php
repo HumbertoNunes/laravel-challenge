@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,8 +36,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/profile', [CandidateController::class, 'store'])->name('profile.store');
-    Route::patch('/profile', [CandidateController::class, 'update'])->name('profile.update');
+    Route::post('/candidate/profile', [CandidateController::class, 'store'])->name('candidate.profile.store');
+    Route::patch('/candidate/profile', [CandidateController::class, 'update'])->name('candidate.profile.update');
+
+    Route::post('/companies/create', CompanyController::class)->name('company.store');
+
+    Route::post('/employee/profile', [EmployeeController::class, 'store'])->name('employee.profile.store');
+    Route::patch('/employee/profile', [EmployeeController::class, 'update'])->name('employee.profile.update');
 });
 
 require __DIR__.'/auth.php';

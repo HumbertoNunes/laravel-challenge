@@ -19,8 +19,8 @@ const form = useForm({
 
 function submit() {
     return profile
-        ? form.patch(route("profile.update"), { preserveScroll: true })
-        : form.post(route("profile.store"), { preserveScroll: true });
+        ? form.patch(route("candidate.profile.update"), { preserveScroll: true })
+        : form.post(route("candidate.profile.store"), { preserveScroll: true });
 }
 </script>
 

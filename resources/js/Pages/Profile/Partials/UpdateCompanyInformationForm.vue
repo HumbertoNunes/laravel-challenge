@@ -6,23 +6,24 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {FwbSelect} from "flowbite-vue";
+import {ref} from "vue";
 
-const profile = usePage().props.profile;
+const profile = usePage().props.profile?.data;
 
 const form = useForm({
-    name: profile?.company?.name ?? "",
-    size: profile?.company?.size ?? "",
+    name: profile?.company_name ?? "",
+    size: profile?.company_size ?? "",
 });
 
+const message = ref();
+
 function submit() {
-    return profile
-        ? form.patch(route("company.profile.update"), { preserveScroll: true })
-        : form.post(route("company.profile.store"), { preserveScroll: true });
+    return form.post(route("company.store"), { preserveScroll: true })
 }
 </script>
 
 <template>
-    <UpdateProfileInformationForm :must-verify-email="false" :profile="{}">
+    <UpdateProfileInformationForm>
         <template #title> Company Information </template>
         <template #subtitle>
             Your company's information.
@@ -33,11 +34,13 @@ function submit() {
                 <InputLabel for="name" value="Name" />
 
                 <TextInput
-                    id="name"
+                    id="company_name"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
+                    :required="!profile?.company_name"
+                    :class="{ 'bg-gray-50 cursor-not-allowed': !!profile?.company_name }"
+                    :disabled="!!profile?.company_name"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -52,14 +55,25 @@ function submit() {
                         { value: 'big', name: 'Big' },
                     ]"
                     label="Size"
-                    required
+                    :required="!profile?.company_size"
+                    :class="{ 'bg-gray-50 cursor-not-allowed': !!profile?.company_size }"
+                    :disabled="!!profile?.company_size"
                 />
 
                 <InputError class="mt-2" :message="form.errors.size" />
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+              <PrimaryButton
+                  :class="{ 'cursor-not-allowed opacity-70': !profile }"
+                  :disabled="form.processing || !profile"
+                  @mouseover="() => {if (!profile) message = 'Save your employee\'s informations first'}"
+                  @mouseout="message = ''"
+              >
+                Save
+              </PrimaryButton>
+
+              <InputError class="mt-2" :message="message" />
 
                 <Transition
                     enter-active-class="transition ease-in-out"

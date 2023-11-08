@@ -6,7 +6,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
-const profile = usePage().props.profile;
+const profile = usePage().props.auth.user.profile;
 
 const form = useForm({
     name: profile?.name ?? "",
@@ -15,13 +15,13 @@ const form = useForm({
 
 function submit() {
     return profile
-        ? form.patch(route("company.profile.update"), { preserveScroll: true })
-        : form.post(route("company.profile.store"), { preserveScroll: true });
+        ? form.patch(route("employee.profile.update"), { preserveScroll: true })
+        : form.post(route("employee.profile.store"), { preserveScroll: true });
 }
 </script>
 
 <template>
-    <UpdateProfileInformationForm :must-verify-email="false" :profile="{}">
+    <UpdateProfileInformationForm>
         <template #title> Employee Profile Information </template>
         <template #subtitle>
             Update your employee's profile information.
@@ -36,7 +36,9 @@ function submit() {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
+                    :required="!profile"
+                    :class="{ 'bg-gray-50 cursor-not-allowed': !!profile }"
+                    :disabled="!!profile"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />

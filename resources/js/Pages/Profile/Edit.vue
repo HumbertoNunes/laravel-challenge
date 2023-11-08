@@ -55,19 +55,33 @@ function showProfileForm(isCandidateProfile) {
 
               <template v-else-if="showForm && !isCandidate">
                 <div v-if="showForm" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                  <UpdateCompanyInformationForm />
+                  <UpdateEmployeeInformationForm />
                 </div>
 
                 <div v-if="showForm" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                  <UpdateEmployeeInformationForm />
+                  <UpdateCompanyInformationForm />
                 </div>
               </template>
             </div>
           </div>
         </template>
 
-        <div class="py-12" v-else-if="!profileIncomplete && isCandidate">
+        <div class="py-12" v-else-if="!profileIncomplete">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div v-if="isCandidate" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <UpdateCandidateInformationForm/>
+                </div>
+
+                <template v-else>
+                  <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <UpdateEmployeeInformationForm />
+                  </div>
+
+                  <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <UpdateCompanyInformationForm />
+                  </div>
+                </template>
+
                 <div
                     class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
                 >
@@ -76,10 +90,6 @@ function showProfileForm(isCandidateProfile) {
                         :status="status"
                         class="max-w-xl"
                     />
-                </div>
-
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateCandidateInformationForm/>
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
