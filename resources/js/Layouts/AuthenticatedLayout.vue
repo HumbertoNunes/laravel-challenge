@@ -5,8 +5,9 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 
+const profile = usePage().props.profile.data;
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -30,7 +31,10 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Opportunities
+                                </NavLink>
+                                <NavLink v-if="!profile.isCandidate" :href="route('job.create')" :active="route().current('job.create')">
+                                    New Job
                                 </NavLink>
                             </div>
                         </div>

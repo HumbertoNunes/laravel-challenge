@@ -18,7 +18,7 @@ class JobFactory extends Factory
     {
         return [
             'title' => fake()->text(30),
-            'descrition' => fake()->text(70),
+            'description' => fake()->text(70),
             'compensation' => fake()->randomFloat(2, 2500, 3500),
             'requirement' => fake()->randomElement(['Computer Science', 'Human Resources', 'Mechanical Engineering'])
         ];

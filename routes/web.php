@@ -3,7 +3,9 @@
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Job;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,9 +30,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'profile.completed'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'profile.completed'])->group(function () {
+    Route::get('/dashboard', fn () => to_route('job.index'))->name('dashboard');
+
+    Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
+    Route::get('/jobs/create', [JobController::class, 'create'])->name('job.create');
+    Route::post('/jobs', [JobController::class, 'store'])->name('job.store');
+    Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('job.destroy');
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/candidate/profile', [CandidateController::class, 'store'])->name('candidate.profile.store');
     Route::patch('/candidate/profile', [CandidateController::class, 'update'])->name('candidate.profile.update');
 
-    Route::post('/companies/create', CompanyController::class)->name('company.store');
+    Route::post('/companies', CompanyController::class)->name('company.store');
 
     Route::post('/employee/profile', [EmployeeController::class, 'store'])->name('employee.profile.store');
     Route::patch('/employee/profile', [EmployeeController::class, 'update'])->name('employee.profile.update');
