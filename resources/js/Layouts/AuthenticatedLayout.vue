@@ -6,12 +6,21 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link, usePage} from '@inertiajs/vue3';
+import {FwbToast} from "flowbite-vue";
 
 const profile = usePage().props.profile.data;
 const showingNavigationDropdown = ref(false);
+
+const ta = ref(false)
 </script>
 
 <template>
+    <div class="absolute bottom-8 right-5" v-show="ta">
+        <fwb-toast type="success">
+            Item moved successfully.
+        </fwb-toast>
+    </div>
+
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">

@@ -49,6 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphTo();
     }
 
+    public function isCandidate(): bool
+    {
+        return str_ends_with($this->profile_type, 'Candidate');
+    }
+
     public function addProfile(Candidate|Employee $profile): bool
     {
         return $this->profile()->associate($profile)->save();

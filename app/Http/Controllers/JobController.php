@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobCreateRequest;
 use App\Models\Job;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class JobController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Job/Index', [
             'jobs' => Job::orderBy('created_at', 'desc')->paginate(3),
         ]);
     }
 
     public function create()
     {
+        $this->authorize('create', Job::class);
+
         return Inertia::render('Job/Create', [
             'status' => session('status'),
             'profileIncomplete' => empty($user->profile),
