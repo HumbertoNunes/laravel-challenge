@@ -65,8 +65,8 @@ function submit() {
 
             <div class="flex items-center gap-4">
               <PrimaryButton
-                  :class="{ 'cursor-not-allowed opacity-70': profile.company_name }"
-                  :disabled="form.processing || profile.company_name"
+                  :class="{ 'cursor-not-allowed opacity-70': profile?.company_name }"
+                  :disabled="form.processing || profile?.company_name"
                   @mouseover="() => {if (!profile) message = 'Save your employee\'s informations first'}"
                   @mouseout="message = ''"
               >

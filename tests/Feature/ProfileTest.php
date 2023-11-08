@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Candidate;
 use App\Models\User;
 
 test('profile page is displayed', function () {
@@ -13,13 +14,18 @@ test('profile page is displayed', function () {
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
+    $user = Candidate::factory([
+        'name' => 'Jane Doe',
+        'birthdate' => '1985-01-19',
+        'gender' => 'Female',
+        'biography' => 'My awesome biography',
+    ])->computerScientist()->hasUser(1)->create()->user;
 
     $response = $this
         ->actingAs($user)
-        ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        ->patch('/candidate/profile', [
+            'course' => 'Human Resource',
+            'biography' => 'My awesome biography',
         ]);
 
     $response
@@ -28,30 +34,17 @@ test('profile information can be updated', function () {
 
     $user->refresh();
 
-    $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
-});
-
-test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => $user->email,
-        ]);
-
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
-
-    $this->assertNotNull($user->refresh()->email_verified_at);
+    $this->assertSame('Human Resource', $user->profile->course);
+    $this->assertSame('My awesome biography', $user->profile->biography);
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
+     $user = Candidate::factory([
+        'name' => 'Jane Doe',
+        'birthdate' => '1985-01-19',
+        'gender' => 'Female',
+        'biography' => 'My awesome biography',
+    ])->computerScientist()->hasUser(1)->create()->user;
 
     $response = $this
         ->actingAs($user)
