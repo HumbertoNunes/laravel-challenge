@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Resources\CandidateResource;
+use App\Http\Resources\EmployeeResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -31,6 +32,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
+        if ($user && $user->profile_id) {
+            $profile = str_ends_with($user->profile_type, 'Candidate') ?
+                new CandidateResource($user->profile) : new EmployeeResource($user->profile);
+        }
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -40,7 +48,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'profile' => fn() => $request->user()?->profile ? new CandidateResource($request->user()?->profile) : null
+            'profile' => fn () => $profile ?? null
         ];
     }
 }
