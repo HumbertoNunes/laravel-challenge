@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import {Head, usePage} from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import WelcomeMessage from "@/Pages/Profile/Partials/WelcomeMessage.vue";
 import UserInformation from "@/Pages/Profile/Partials/UserInformation.vue";
@@ -25,10 +25,11 @@ const props = defineProps({
 
 const user = usePage().props.auth.user;
 const showForm = ref(false);
-const isCandidate = ref(user.profile_type?.endsWith('Candidate'));
+const isCandidate = ref(user.profile_type?.endsWith("Candidate"));
 function showProfileForm(isCandidateProfile) {
     showForm.value = true;
-    isCandidate.value = isCandidateProfile || user.profile_type?.endsWith('Candidate');
+    isCandidate.value =
+        isCandidateProfile || user.profile_type?.endsWith("Candidate");
 }
 </script>
 
@@ -47,39 +48,55 @@ function showProfileForm(isCandidateProfile) {
         <template v-if="profileIncomplete">
             <WelcomeMessage @profileSelected="showProfileForm" />
 
-          <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-              <div v-if="showForm && isCandidate" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <UpdateCandidateInformationForm />
-              </div>
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                    <div
+                        v-if="showForm && isCandidate"
+                        class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                    >
+                        <UpdateCandidateInformationForm />
+                    </div>
 
-              <template v-else-if="showForm && !isCandidate">
-                <div v-if="showForm" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                  <UpdateEmployeeInformationForm />
-                </div>
+                    <template v-else-if="showForm && !isCandidate">
+                        <div
+                            v-if="showForm"
+                            class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                        >
+                            <UpdateEmployeeInformationForm />
+                        </div>
 
-                <div v-if="showForm" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                  <UpdateCompanyInformationForm />
+                        <div
+                            v-if="showForm"
+                            class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                        >
+                            <UpdateCompanyInformationForm />
+                        </div>
+                    </template>
                 </div>
-              </template>
             </div>
-          </div>
         </template>
 
         <div class="py-12" v-else-if="!profileIncomplete">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div v-if="isCandidate" class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateCandidateInformationForm/>
+                <div
+                    v-if="isCandidate"
+                    class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                >
+                    <UpdateCandidateInformationForm />
                 </div>
 
                 <template v-else>
-                  <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateEmployeeInformationForm />
-                  </div>
+                    <div
+                        class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                    >
+                        <UpdateEmployeeInformationForm />
+                    </div>
 
-                  <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateCompanyInformationForm />
-                  </div>
+                    <div
+                        class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                    >
+                        <UpdateCompanyInformationForm />
+                    </div>
                 </template>
 
                 <div
@@ -92,11 +109,15 @@ function showProfileForm(isCandidateProfile) {
                     />
                 </div>
 
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div
+                    class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                >
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
 
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <div
+                    class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                >
                     <DeleteUserForm class="max-w-xl" />
                 </div>
             </div>

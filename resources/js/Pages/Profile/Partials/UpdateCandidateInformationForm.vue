@@ -19,20 +19,20 @@ const form = useForm({
 
 function submit() {
     return profile
-        ? form.patch(route("candidate.profile.update"), { preserveScroll: true })
+        ? form.patch(route("candidate.profile.update"), {
+              preserveScroll: true,
+          })
         : form.post(route("candidate.profile.store"), { preserveScroll: true });
 }
 </script>
 
 <template>
     <UpdateProfileInformationForm>
-            <template #title>
-                Candidate Profile Information
-            </template>
+        <template #title> Candidate Profile Information </template>
 
-            <template #subtitle>
-                Update your candidate's profile information.
-            </template>
+        <template #subtitle>
+            Update your candidate's profile information.
+        </template>
 
         <form @submit.prevent="submit" class="mt-6 space-y-6">
             <div>

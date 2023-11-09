@@ -1,18 +1,18 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {FwbBadge} from "flowbite-vue";
-import {usePage} from "@inertiajs/vue3";
-import {useTimeAgo} from "@vueuse/core";
+import { FwbBadge } from "flowbite-vue";
+import { usePage } from "@inertiajs/vue3";
+import { useTimeAgo } from "@vueuse/core";
 
-defineEmits(['apply']);
+defineEmits(["apply"]);
 
 const profile = usePage().props.profile.data;
 
-const {job} = defineProps({
+const { job } = defineProps({
     job: {
         type: Object,
-    }
-})
+    },
+});
 </script>
 
 <template>
@@ -25,6 +25,4 @@ const {job} = defineProps({
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
